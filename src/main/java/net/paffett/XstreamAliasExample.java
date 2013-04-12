@@ -22,7 +22,7 @@ public class XstreamAliasExample {
 		
 		ODSRequestElement request1 = new ODSRequestElement();
 		request1.setRowDef(Boolean.TRUE);
-		request1.setUserData("ABC");
+		request1.setUserData("GEOFF");
 		request1.setSelect("ADDRESS_1, ADDRESS_2, ZIP_POSTAL_CODE, ATV_CUR_BAL FROM ALPHA WHERE NAME=\"SMITH,JOHN P\" AND SYSTEM = 0220  AND LEVEL = \"L\" AND SEQ BETWEEN 1 AND 10 ");
 		
 		FDRRequestMessage fdrRequest = new FDRRequestMessage();
