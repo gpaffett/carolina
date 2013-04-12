@@ -1,4 +1,4 @@
-package net.paffett.domain;
+package net.paffett.domain.ods.request;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamConverter;

@@ -1,7 +1,9 @@
-package net.paffett.domain;
+package net.paffett.domain.ods.request;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import net.paffett.domain.FDRMessage;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
