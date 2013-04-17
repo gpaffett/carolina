@@ -15,14 +15,15 @@
 	<!-- Use Springs JNDI support to look up JMS Connection Factory and Queue 
 		definitions from the container. This means that specific connection details 
 		are not embedded in the application -->
-	<jee:jndi-lookup id="mqConnectionFactory"
-		jndi-name="java:comp/env/jms/mqConnectionFactory" />
+	<jee:jndi-lookup id="mqConnectionFactory" jndi-name="java:comp/env/jms/mqConnectionFactory" />
+
 	<jee:jndi-lookup id="testQueueOne" jndi-name="java:comp/env/jms/testQueueOne" />
+
 	<jee:jndi-lookup id="testQueueTwo" jndi-name="java:comp/env/jms/testQueueTwo" />
 
 	<!-- Our message listener implementation that implements the JMS MessageListener 
 		interface and implements the onMessage method to process incoming messages -->
-	<bean id="testMessageListener" class="com.blog.spring.jms.TestMessageListener">
+	<bean id="testMessageListener" class="net.paffett.spring.jms.TestMessageListener">
 		<property name="testMessageSender" ref="testMessageSender" />
 	</bean>
 
@@ -38,6 +39,7 @@
 		- this is the number of threads that the DeafultMesaegListenerContainer will 
 		spawn to handle incoming messages. The default is 1 but in our application 
 		we'll have 2 separate threads processing incoming messages. -->
+		
 	<bean id="poiMessageListenerContainer"
 		class="org.springframework.jms.listener.DefaultMessageListenerContainer">
 		<property name="connectionFactory" ref="mqConnectionFactory" />
@@ -48,7 +50,7 @@
 
 	<!-- MessageSender is a simple POJO that we supply with a JMSTemplate and 
 		the Queue that we want to send messages to -->
-	<bean id="testMessageSender" class="com.blog.spring.jms.TestMessageSender">
+	<bean id="testMessageSender" class="net.paffett.spring.jms.TestMessageSender">
 		<property name="jmsTemplate" ref="jmsTemplate" />
 		<property name="testQueue" ref="testQueueTwo" />
 	</bean>
@@ -58,6 +60,7 @@
 		as exception handling and resource management such as connection pooling. 
 		This allows us concentrate on solving the 'business' problem. We supply the 
 		JMS template with the connection factory mentioned above -->
+	
 	<bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
 		<property name="connectionFactory" ref="mqConnectionFactory" />
 	</bean>
