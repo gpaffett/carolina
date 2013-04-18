@@ -13,11 +13,10 @@
     <form:form commandName="recipe" method="post" action="/isis/save">
     <p>
       <form:hidden path="id" id="id"/>
-      <label>Name</label><form:input path="name" id="name"/>
-      <label>Author</label><form:input path="author" id="author"/>
+      <label>Message</label><form:textarea path="message" id="message"/>k      
     </p>
     <p>
-      <input type="submit" name="save" value="save"/>
+      <input type="submit" name="send" value="Send"/>
     </p>        
     </form:form>
   </body>

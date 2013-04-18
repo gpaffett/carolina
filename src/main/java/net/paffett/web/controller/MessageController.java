@@ -9,7 +9,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.paffett.web.form.RecipeForm;
+import net.paffett.web.form.MessageForm;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -21,40 +21,26 @@ import org.springframework.web.servlet.ModelAndView;
 
 @RequestMapping("/")
 @Controller
-public class RecipeController {
+public class MessageController {
 
-	Map<Integer, RecipeForm> recipeList = new HashMap<Integer, RecipeForm>();
+	Map<Integer, MessageForm> recipeList = new HashMap<Integer, MessageForm>();
 	static int id = 0;
 
 	/** Save a recipe and return back to display all recipe	 **/
-	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public ModelAndView save(RecipeForm form, BindingResult errors,
+	@RequestMapping(value = "/send", method = RequestMethod.POST)
+	public ModelAndView send(MessageForm form, BindingResult errors,
 			HttpServletRequest request, HttpServletResponse response) {
-		if (form.getId() == -1) {
-			id++;
-			form.setId(id);
-			recipeList.put(id, form);
-		} else {
-			recipeList.put(form.getId(), form);
-		}
 
 		ModelMap modelMap = new ModelMap();
-		Iterator<Integer> iter = recipeList.keySet().iterator();
-		List<RecipeForm> updatedRecipeList = new ArrayList<RecipeForm>();
-		while (iter.hasNext()) {
-			Object key = iter.next();
-			if (key != null)
-				updatedRecipeList.add(recipeList.get(key));
-		}
-		modelMap.put("recipes", updatedRecipeList);
+		modelMap.put("message", ((MessageForm)form).getMessageText());
 		return new ModelAndView("show", modelMap);
 	}
 
-	@RequestMapping(value = "/newrecipe", method = RequestMethod.GET)
+	@RequestMapping(value = "/newmessage", method = RequestMethod.GET)
 	public ModelAndView newRecipe() {
-		RecipeForm form = new RecipeForm();
+		MessageForm form = new MessageForm();
 		ModelMap map = new ModelMap();
-		map.put("recipe", form);
+		map.put("message", form);
 		return new ModelAndView("recipe", map);
 	}
 
@@ -63,7 +49,7 @@ public class RecipeController {
 	public String displayAll(HttpServletRequest request) {
 		ModelMap map = new ModelMap();
 		Iterator<Integer> iter = recipeList.keySet().iterator();
-		List<RecipeForm> newMap = new ArrayList<RecipeForm>();
+		List<MessageForm> newMap = new ArrayList<MessageForm>();
 		while (iter.hasNext()) {
 			Object key = iter.next();
 			if (key != null)
@@ -79,7 +65,7 @@ public class RecipeController {
 	public String delete(@PathVariable String id, HttpServletRequest request) {
 		recipeList.remove(Integer.parseInt(id));
 		Iterator<Integer> iter = recipeList.keySet().iterator();
-		List<RecipeForm> newMap = new ArrayList<RecipeForm>();
+		List<MessageForm> newMap = new ArrayList<MessageForm>();
 		while (iter.hasNext()) {
 			Object key = iter.next();
 			if (key != null)

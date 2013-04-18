@@ -23,8 +23,8 @@
 
 	<!-- Our message listener implementation that implements the JMS MessageListener 
 		interface and implements the onMessage method to process incoming messages -->
-	<bean id="testMessageListener" class="net.paffett.spring.jms.TestMessageListener">
-		<property name="testMessageSender" ref="testMessageSender" />
+	<bean id="testMessageListener" class="net.paffett.spring.jms.TestODSMessageListener">
+		<property name="queueSender" ref="queueSender" />
 	</bean>
 
 	<!-- DefaultMessageListenerConatiner is the Spring equivalent to an EJB 
@@ -50,7 +50,7 @@
 
 	<!-- MessageSender is a simple POJO that we supply with a JMSTemplate and 
 		the Queue that we want to send messages to -->
-	<bean id="testMessageSender" class="net.paffett.spring.jms.TestMessageSender">
+	<bean id="queueSender" class="net.paffett.spring.jms.QueueSender">
 		<property name="jmsTemplate" ref="jmsTemplate" />
 		<property name="testQueue" ref="testQueueTwo" />
 	</bean>
