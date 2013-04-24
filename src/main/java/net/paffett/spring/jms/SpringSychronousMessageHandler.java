@@ -19,15 +19,13 @@ import org.springframework.jms.core.MessageCreator;
 public abstract class SpringSychronousMessageHandler implements
 		SynchronousMessageHandler {
 
-	private JmsTemplate jmsTemplate;
-	private static final Log log = LogFactory
-			.getLog(SpringSychronousMessageHandler.class);
+	protected JmsTemplate jmsTemplate;
+	protected Log log = LogFactory.getLog(this.getClass());
 	private static final int JMS_REQUEST_RETRY_COUNT = 3;
 	private static final int JMS_RESPONSE_RETRY_COUNT = 0;
 	private static final int JMS_RETRY_INTERVAL = 2000;
 	private static final int FAILOVER_RETRY_INTERVAL = 10000;
 
-	private ConnectionFactory connectionFactory;
 	private Destination requestDestination;
 	private Destination responseDestination;	
 
@@ -35,9 +33,10 @@ public abstract class SpringSychronousMessageHandler implements
 	
 	public String sendAndReceive(int retryAttempts, Boolean retry) throws JMSException, Exception {
 					
-		String messageId  = sendMessage(getSendDestination(), retryAttempts, retry);
+		String messageId  = sendMessage(getRequestDestination(), retryAttempts, retry);
 
-		String responseMessage = receiveMessage(messageId, getReceiveDestination(), JMS_RESPONSE_RETRY_COUNT );
+		String responseMessage = "Response"; 
+		//receiveMessage(messageId, getReceiveDestination(), JMS_RESPONSE_RETRY_COUNT );
 
 		if (responseMessage == null) {
 			//TODO Enhance Error Message
@@ -63,7 +62,7 @@ public abstract class SpringSychronousMessageHandler implements
 
 		try {
 			log.info("Sending Message");
-			jmsTemplate.convertAndSend(destination, messageCreator.createMessage(null));
+			jmsTemplate.send(destination, messageCreator);
 		} catch (JmsException e) {
 			if (retry) {
 				if (retryAttempts < JMS_REQUEST_RETRY_COUNT) {
@@ -154,17 +153,7 @@ public abstract class SpringSychronousMessageHandler implements
 		return responseMesgStr;
 	}
 
-
-	public ConnectionFactory getConnectionFactory() {
-		return connectionFactory;
-	}
-
-	public void setConnectionFactory(ConnectionFactory connectionFactory) {
-		this.connectionFactory = connectionFactory;
-
-	}
-
-	public Destination getReceiveDestination() throws JMSException {
+	public Destination getResponseDestination() throws JMSException {
 		return responseDestination;
 	}
 
@@ -172,14 +161,14 @@ public abstract class SpringSychronousMessageHandler implements
 	 * @param receiveDestination
 	 *            the receiveDestination to set
 	 */
-	public void setReceiveDestination(Destination receiveDestination) {
-		this.responseDestination = receiveDestination;
+	public void setResponseDestination(Destination responseDestination) {
+		this.responseDestination = responseDestination;
 	}
 
 	/**
 	 * @return the sendDestination
 	 */
-	public Destination getSendDestination() throws JMSException {
+	public Destination getRequestDestination() throws JMSException {
 		return requestDestination;
 	}
 
@@ -187,8 +176,8 @@ public abstract class SpringSychronousMessageHandler implements
 	 * @param responseDestination
 	 *            the receiveDestination to set
 	 */
-	public void setSendDestination(Destination sendDestination) {
-		this.requestDestination = sendDestination;
+	public void setRequestDestination(Destination requestDestination) {
+		this.requestDestination = requestDestination;
 	}
 
 	public void setJmsTemplate(JmsTemplate jmsTemplate) {

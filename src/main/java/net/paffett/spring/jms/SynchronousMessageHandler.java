@@ -1,10 +1,6 @@
 package net.paffett.spring.jms;
 
-import java.util.Map;
-
 import javax.jms.JMSException;
-
-import com.ecount.core.exceptions.ECSJMSException;
 
 
 

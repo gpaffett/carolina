@@ -45,15 +45,6 @@ public class QueueSender {
 	}
 
 	/**
-	 * Sets the JMS Request Queue
-	 * 
-	 * @param requestQueue
-	 */
-	public void setRequestQueue(Queue requestQueue) {
-		this.requestQueue = requestQueue;
-	}
-
-	/**
 	 * Sets the JMS Response Queue
 	 * 
 	 * @param responseQueue

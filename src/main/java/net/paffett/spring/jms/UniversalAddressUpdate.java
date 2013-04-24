@@ -33,11 +33,6 @@ public class UniversalAddressUpdate extends SpringSychronousMessageHandler {
 			if(null != jmsHeader && jmsHeader.getExpiration()>0){
 				getTextMessage().setJMSExpiration(jmsHeader.getExpiration());
 			}
-				
-			if( null != jmsHeader && null != jmsHeader.getQueueMgrName() && null != jmsHeader.getQueueName()  ) {
-				Destination destination = new com.ibm.mq.jms.MQQueue(jmsHeader.getQueueMgrName(), jmsHeader.getQueueName());
-				getTextMessage().setJMSReplyTo(destination);
-			}			
 
 			return getTextMessage();
 		}

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+                                  http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  
+                                  http://www.springframework.org/schema/context  
+                                  http://www.springframework.org/schema/context/spring-context-3.0.xsd  
+                                  http://www.springframework.org/schema/beans  
+                                  http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  
+                                  http://www.springframework.org/schema/jee  
+                                  http://www.springframework.org/schema/jee/spring-jee-3.0.xsd">
+
+
+	<bean id="amqConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+	  <property name="brokerURL">
+	    <value>tcp://localhost:61616</value>
+	  </property>
+	</bean>
+	
+	<!-- A cached connection to wrap the ActiveMQ connection -->
+
+	<bean id="cachedConnectionFactory" class="org.springframework.jms.connection.CachingConnectionFactory" >
+		<property name="targetConnectionFactory" ref="amqConnectionFactory" />
+		<property name="sessionCacheSize">
+		  <value>10</value>
+		</property>
+	</bean>
+
+	<!-- A destination in ActiveMQ -->
+	<bean id="destination" class="org.apache.activemq.command.ActiveMQQueue">
+		<constructor-arg value="FOO.TEST" />
+	</bean>
+
+	<!-- A JmsTemplate instance that uses the cached connection and destination -->
+	<bean id="producerTemplate" class="org.springframework.jms.core.JmsTemplate">
+	  <property name="connectionFactory" ref="cachedConnectionFactory" />
+	  <property name="defaultDestination" ref="destination"/>	
+	</bean>
+		
+	<bean id="activationCodeInquiry" class="net.paffett.spring.jms.ActivationCodeInquiry">
+	  <property name="jmsTemplate" ref="producerTemplate" />
+	  <property name="requestDestination" ref="destination" />
+	  <property name="responseDestination" ref="destination" />	  
+	</bean>
+
+
+</beans>

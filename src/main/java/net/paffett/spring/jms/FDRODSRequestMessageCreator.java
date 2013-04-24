@@ -55,18 +55,7 @@ public class FDRODSRequestMessageCreator implements MessageCreator {
 		if(null != jmsHeader && jmsHeader.getExpiration()>0){
 			getTextMessage().setJMSExpiration(jmsHeader.getExpiration());
 		}
-			
-		if( null != jmsHeader && jmsHeader.getTimeToLive() > 0 ) {
-			getJMSTemplate().setTimeToLive(jmsHeader.getTimeToLive());
-		}else{
-			getTextMessage().setJMSExpiration(0);
-		}			
-
-		if( null != jmsHeader && null != jmsHeader.getQueueMgrName() && null != jmsHeader.getQueueName()  ) {
-			Destination destination = new com.ibm.mq.jms.MQQueue(jmsHeader.getQueueMgrName(), jmsHeader.getQueueName());
-			getTextMessage().setJMSReplyTo(destination);
-		}			
-
+					
 		return getTextMessage();
 	}
 }
