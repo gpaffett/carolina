@@ -1,15 +1,29 @@
 package net.paffett.spring.jms;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.text.MessageFormat;
+import java.util.List;
+
 import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.TextMessage;
+
+import net.paffett.domain.ods.request.FDRRequestMessage;
+import net.paffett.domain.ods.request.ODSRequestElement;
+import net.paffett.domain.ods.request.ODSSecurityElement;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.jms.JmsException;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
+
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
+import com.thoughtworks.xstream.io.xml.PrettyPrintWriter;
 
 /**
  * 
@@ -29,11 +43,21 @@ public abstract class SpringSychronousMessageHandler implements
 	private Destination requestDestination;
 	private Destination responseDestination;	
 
-	protected abstract MessageCreator getMessageCreator();
+
+	public abstract List<?> query(List<?> params);
 	
-	public String sendAndReceive(int retryAttempts, Boolean retry) throws JMSException, Exception {
+	private MessageCreator getMessageCreator(String query, Object[] arguments ) {
+		FDRSelectODSMessageCreator messageCreator = new FDRSelectODSMessageCreator();
+
+		String messageText = formatMessageText("GEOFF", "PASSWORD", Boolean.TRUE, "1234", MessageFormat.format(query, arguments));
+		messageCreator.setMessage(messageText);
+
+		return messageCreator;
+	}
+	
+	public String sendAndReceive(String query, Object[] params, int retryAttempts, Boolean retry) throws JMSException, Exception {
 					
-		String messageId  = sendMessage(getRequestDestination(), retryAttempts, retry);
+		String messageId  = sendMessage(query, params, getRequestDestination(), retryAttempts, retry);
 
 		String responseMessage = "Response"; 
 		//receiveMessage(messageId, getReceiveDestination(), JMS_RESPONSE_RETRY_COUNT );
@@ -53,12 +77,12 @@ public abstract class SpringSychronousMessageHandler implements
 		return responseMessage;
 	}
 
-	private String sendMessage(final Destination destination, int retryAttempts, Boolean retry)
+	private String sendMessage(String query, Object[] params, final Destination destination, int retryAttempts, Boolean retry)
 			throws JmsException, Exception {
 		
 		String messageId = null;
 		
-		MessageCreator messageCreator = getMessageCreator();
+		MessageCreator messageCreator = getMessageCreator(query, params);
 
 		try {
 			log.info("Sending Message");
@@ -82,7 +106,7 @@ public abstract class SpringSychronousMessageHandler implements
 						log.warn("sendMessage: InterruptedException during Thread.sleep call: "
 								+ ie);
 					}
-					messageId = sendMessage(destination, retryAttempts, retry); 
+					messageId = sendMessage(query, params, destination, retryAttempts, retry); 
 					
 				} else {
 					throw e; // throw exception after max retry attempts.
@@ -152,6 +176,38 @@ public abstract class SpringSychronousMessageHandler implements
 
 		return responseMesgStr;
 	}
+	
+	protected String formatMessageText(String userId, String passwrd, Boolean rowDef, String userData, String select)
+	{
+		ODSSecurityElement security = new ODSSecurityElement();		
+		security.setUserId(userId);
+		security.setPasswd(passwrd);
+		
+		ODSRequestElement request1 = new ODSRequestElement();
+		request1.setRowDef(rowDef);
+		request1.setUserData(userData);
+		request1.setSelect(select);
+		
+		FDRRequestMessage fdrRequest = new FDRRequestMessage();
+		fdrRequest.setSecurityElement(security);
+		fdrRequest.addRequestElement(request1);
+		
+		XStream xstream  = new XStream();
+		xstream.processAnnotations(FDRRequestMessage.class);
+		
+		ByteArrayOutputStream stream = new ByteArrayOutputStream();
+		OutputStreamWriter writer = new OutputStreamWriter(stream);
+		try {
+			writer.write("<?xml version=\"1.0\" ?>\n");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			log.error("Oh Crap", e);
+		}
+		HierarchicalStreamWriter xmlWriter = new PrettyPrintWriter(writer);
+		xstream.marshal(fdrRequest, xmlWriter);
+		return new String(stream.toByteArray());
+	}
+	
 
 	public Destination getResponseDestination() throws JMSException {
 		return responseDestination;

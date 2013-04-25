@@ -1,5 +1,8 @@
 package net.paffett.spring.jms;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.jms.JMSException;
 
 import junit.framework.TestCase;
@@ -32,9 +35,10 @@ public class SynchronousMessageSenderTest extends TestCase {
 	public void testActivationInquiry() {
 
 		try {
-			aci.sendAndReceive(1, Boolean.FALSE);
-		} catch (JMSException e) {
-			log.error("Oh Crap", e);
+			List<String> params = new ArrayList<String>();
+			params.add("George");
+			
+			aci.query(params);
 		} catch (Exception e) {
 			log.error("Oh Crap", e);
 		}
