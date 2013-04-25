@@ -17,12 +17,15 @@ import org.springframework.jms.core.MessageCreator;
 public class ActivationCodeInquiry extends SpringSychronousMessageHandler {
 
 	private String query = "ATV_RIS_CTL_FLG FROM CHDHDLR WHERE CARDHDLR = \"{0}\"";
-
+	
 	public List<?> query(List<?> params) {
 		List<String> list = new ArrayList<String>();
 
 		try {			
-			String response = sendAndReceive(query, params.toArray(), 1, Boolean.FALSE);
+			
+			FDRODSRequestMessageCreator messageCreator = (FDRODSRequestMessageCreator)getMessageCreator();
+			messageCreator.setQuery(query, params.toArray());
+			String response = sendAndReceive(1, Boolean.FALSE);
 			list.add(response);
 		} catch (Exception e) {
 			log.error("Oh Crap!", e);

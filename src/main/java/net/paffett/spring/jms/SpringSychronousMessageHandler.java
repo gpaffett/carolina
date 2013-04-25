@@ -40,24 +40,24 @@ public abstract class SpringSychronousMessageHandler implements
 	private static final int JMS_RETRY_INTERVAL = 2000;
 	private static final int FAILOVER_RETRY_INTERVAL = 10000;
 
+	private MessageCreator messageCreator;
 	private Destination requestDestination;
 	private Destination responseDestination;	
 
 
 	public abstract List<?> query(List<?> params);
 	
-	private MessageCreator getMessageCreator(String query, Object[] arguments ) {
-		FDRSelectODSMessageCreator messageCreator = new FDRSelectODSMessageCreator();
-
-		String messageText = formatMessageText("GEOFF", "PASSWORD", Boolean.TRUE, "1234", MessageFormat.format(query, arguments));
-		messageCreator.setMessage(messageText);
-
+	protected MessageCreator getMessageCreator() {
 		return messageCreator;
 	}
 	
-	public String sendAndReceive(String query, Object[] params, int retryAttempts, Boolean retry) throws JMSException, Exception {
+	public void setMessageCreator(MessageCreator messageCreator) {
+		this.messageCreator = messageCreator;
+	}
+	
+	public String sendAndReceive(int retryAttempts, Boolean retry) throws JMSException, Exception {
 					
-		String messageId  = sendMessage(query, params, getRequestDestination(), retryAttempts, retry);
+		String messageId  = sendMessage(getRequestDestination(), retryAttempts, retry);
 
 		String responseMessage = "Response"; 
 		//receiveMessage(messageId, getReceiveDestination(), JMS_RESPONSE_RETRY_COUNT );
@@ -77,12 +77,12 @@ public abstract class SpringSychronousMessageHandler implements
 		return responseMessage;
 	}
 
-	private String sendMessage(String query, Object[] params, final Destination destination, int retryAttempts, Boolean retry)
+	private String sendMessage(final Destination destination, int retryAttempts, Boolean retry)
 			throws JmsException, Exception {
 		
 		String messageId = null;
 		
-		MessageCreator messageCreator = getMessageCreator(query, params);
+		MessageCreator messageCreator = getMessageCreator();
 
 		try {
 			log.info("Sending Message");
@@ -106,7 +106,7 @@ public abstract class SpringSychronousMessageHandler implements
 						log.warn("sendMessage: InterruptedException during Thread.sleep call: "
 								+ ie);
 					}
-					messageId = sendMessage(query, params, destination, retryAttempts, retry); 
+					messageId = sendMessage(destination, retryAttempts, retry); 
 					
 				} else {
 					throw e; // throw exception after max retry attempts.
@@ -177,38 +177,8 @@ public abstract class SpringSychronousMessageHandler implements
 		return responseMesgStr;
 	}
 	
-	protected String formatMessageText(String userId, String passwrd, Boolean rowDef, String userData, String select)
-	{
-		ODSSecurityElement security = new ODSSecurityElement();		
-		security.setUserId(userId);
-		security.setPasswd(passwrd);
-		
-		ODSRequestElement request1 = new ODSRequestElement();
-		request1.setRowDef(rowDef);
-		request1.setUserData(userData);
-		request1.setSelect(select);
-		
-		FDRRequestMessage fdrRequest = new FDRRequestMessage();
-		fdrRequest.setSecurityElement(security);
-		fdrRequest.addRequestElement(request1);
-		
-		XStream xstream  = new XStream();
-		xstream.processAnnotations(FDRRequestMessage.class);
-		
-		ByteArrayOutputStream stream = new ByteArrayOutputStream();
-		OutputStreamWriter writer = new OutputStreamWriter(stream);
-		try {
-			writer.write("<?xml version=\"1.0\" ?>\n");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			log.error("Oh Crap", e);
-		}
-		HierarchicalStreamWriter xmlWriter = new PrettyPrintWriter(writer);
-		xstream.marshal(fdrRequest, xmlWriter);
-		return new String(stream.toByteArray());
-	}
 	
-
+	
 	public Destination getResponseDestination() throws JMSException {
 		return responseDestination;
 	}

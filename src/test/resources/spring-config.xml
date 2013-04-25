@@ -38,11 +38,18 @@
 	  <property name="connectionFactory" ref="cachedConnectionFactory" />
 	  <property name="defaultDestination" ref="destination"/>	
 	</bean>
+	
+	<bean id="fdrODSRequestMessageCreator" class="net.paffett.spring.jms.FDRODSRequestMessageCreator">
+	  <property name="userId"><value>CBASE</value></property>
+	  <property name="password"><value>ECOUNT</value></property>
+	  <property name="rowDef"><value>True</value></property>
+	</bean>
 		
 	<bean id="activationCodeInquiry" class="net.paffett.spring.jms.ActivationCodeInquiry">
 	  <property name="jmsTemplate" ref="producerTemplate" />
 	  <property name="requestDestination" ref="destination" />
-	  <property name="responseDestination" ref="destination" />	  
+	  <property name="responseDestination" ref="destination" />
+	  <property name="messageCreator" ref="fdrODSRequestMessageCreator" />	  
 	</bean>
 
 

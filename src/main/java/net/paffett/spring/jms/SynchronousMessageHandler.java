@@ -11,6 +11,6 @@ import javax.jms.JMSException;
  */
 public interface SynchronousMessageHandler {
 
-	public String sendAndReceive(String query, Object[] params, int retryAttempts, Boolean retry) throws JMSException, Exception;
+	public String sendAndReceive(int retryAttempts, Boolean retry) throws JMSException, Exception;
 		
 }
