@@ -14,43 +14,70 @@
 
 
 	<bean id="amqConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
-	  <property name="brokerURL">
-	    <value>tcp://localhost:61616</value>
-	  </property>
+		<property name="brokerURL">
+			<value>tcp://localhost:61616</value>
+		</property>
 	</bean>
-	
+
 	<!-- A cached connection to wrap the ActiveMQ connection -->
 
-	<bean id="cachedConnectionFactory" class="org.springframework.jms.connection.CachingConnectionFactory" >
+	<bean id="cachedConnectionFactory"
+		class="org.springframework.jms.connection.CachingConnectionFactory">
 		<property name="targetConnectionFactory" ref="amqConnectionFactory" />
 		<property name="sessionCacheSize">
-		  <value>10</value>
+			<value>10</value>
 		</property>
 	</bean>
 
 	<!-- A destination in ActiveMQ -->
-	<bean id="destination" class="org.apache.activemq.command.ActiveMQQueue">
+	<bean id="requestDestination" class="org.apache.activemq.command.ActiveMQQueue">
 		<constructor-arg value="FOO.TEST" />
 	</bean>
 
-	<!-- A JmsTemplate instance that uses the cached connection and destination -->
-	<bean id="producerTemplate" class="org.springframework.jms.core.JmsTemplate">
-	  <property name="connectionFactory" ref="cachedConnectionFactory" />
-	  <property name="defaultDestination" ref="destination"/>	
+	<!-- A destination in ActiveMQ -->
+	<bean id="responseDestination" class="org.apache.activemq.command.ActiveMQQueue">
+		<constructor-arg value="FOO.BAR" />
 	</bean>
 	
-	<bean id="fdrODSRequestMessageCreator" class="net.paffett.spring.jms.FDRODSRequestMessageCreator">
-	  <property name="userId"><value>CBASE</value></property>
-	  <property name="password"><value>ECOUNT</value></property>
-	  <property name="rowDef"><value>True</value></property>
-	</bean>
-		
-	<bean id="activationCodeInquiry" class="net.paffett.spring.jms.ActivationCodeInquiry">
-	  <property name="jmsTemplate" ref="producerTemplate" />
-	  <property name="requestDestination" ref="destination" />
-	  <property name="responseDestination" ref="destination" />
-	  <property name="messageCreator" ref="fdrODSRequestMessageCreator" />	  
+	<!-- A JmsTemplate instance that uses the cached connection and destination -->
+	<bean id="producerTemplate" class="org.springframework.jms.core.JmsTemplate">
+		<property name="connectionFactory" ref="cachedConnectionFactory" />
+		<property name="defaultDestination" ref="requestDestination" />
 	</bean>
 
+	<bean id="fdrODSRequestMessageCreator" class="net.paffett.spring.jms.FDRODSRequestMessageCreator" />
+
+	<bean id="activationCodeInquiry" class="net.paffett.spring.jms.ActivationCodeInquiry">
+		<property name="jmsTemplate" ref="producerTemplate" />
+		<property name="requestDestination" ref="requestDestination" />
+		<property name="responseDestination" ref="responseDestination" />
+		<property name="messageCreator" ref="fdrODSRequestMessageCreator" />
+		<property name="userId">
+			<value>CBASE</value>
+		</property>
+		<property name="password">
+			<value>ECOUNT</value>
+		</property>
+		<property name="rowDef">
+			<value>True</value>
+		</property>
+	</bean>
+	
+	<bean id="poiMessageListenerContainer"
+		class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+		<property name="connectionFactory" ref="cachedConnectionFactory" />
+		<property name="destination" ref="requestDestination" />
+		<property name="messageListener" ref="testMessageListener" />
+		<property name="concurrentConsumers" value="2" />
+	</bean>
+	
+	<bean id="testMessageListener" class="net.paffett.spring.jms.TestODSMessageListener">
+		<property name="queueSender" ref="queueSender" />
+	</bean>
+	
+	<bean id="queueSender" class="net.paffett.spring.jms.QueueSender">
+		<property name="jmsTemplate" ref="producerTemplate" />
+		<property name="sendQueue" ref="responseDestination" />
+	</bean>
 
 </beans>

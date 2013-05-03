@@ -15,6 +15,9 @@ public class ODSReplyElement {
 	
 	@XStreamAlias("ROWSET")	
 	private ODSRowSetElement rowSet;
+	
+	@XStreamAlias("MESSAGE")	
+	private ODSMessageElement message;
 		
 	public String getResultCode() {
 		return resultCode;
@@ -38,6 +41,18 @@ public class ODSReplyElement {
 	
 	public void setUserData(String userData) {
 		this.userData = userData;
+	}
+
+	public ODSMessageElement getMessage() {
+		return message;
+	}
+
+	public void setMessage(ODSMessageElement message) {
+		this.message = message;
+	}
+
+	public void setRowSet(ODSRowSetElement rowSet) {
+		this.rowSet = rowSet;
 	}
 		
 }

@@ -9,7 +9,7 @@ public class ODSRequestElement {
 	
 	@XStreamAlias("ROWDEF")
 	@XStreamConverter(value=BooleanConverter.class, booleans={true}, strings={"Y", "N"})
-	private Boolean rowDef;
+	private Boolean rowDef = Boolean.TRUE;
 	
 	@XStreamAlias("COLUMNID")
 	@XStreamConverter(value=BooleanConverter.class, booleans={true}, strings={"Y", "N"})

@@ -2,30 +2,41 @@ package net.paffett.domain.ods.reply;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-import com.thoughtworks.xstream.annotations.XStreamConverter;
-import com.thoughtworks.xstream.converters.extended.ToAttributedValueConverter;
 
-@XStreamAlias("C")
-@XStreamConverter(value=ToAttributedValueConverter.class, strings={"value"})
+@XStreamAlias("COLUMN")
 public class ODSColumnElement {
-	
+		
 	@XStreamAlias("ID")
 	@XStreamAsAttribute
 	private String id;
 	
-	private String value;
+	@XStreamAlias("LEN")
+	@XStreamAsAttribute
+	private String length;
 	
+	@XStreamAlias("NULL")
+	@XStreamAsAttribute
+	private Boolean nullable;
+		
 	public String getId() {
 		return id;
 	}
 	public void setId(String id) {
 		this.id = id;
 	}
-	public String getValue() {
-		return value;
+	public String getLength() {
+		return length;
 	}
-	public void setValue(String value) {
-		this.value = value;
+	public void setLength(String length) {
+		this.length = length;
+	}
+	public Boolean getNullable() {
+		return nullable;
+	}
+	public void setNullable(Boolean nullable) {
+		this.nullable = nullable;
 	}
 	
+	
+
 }

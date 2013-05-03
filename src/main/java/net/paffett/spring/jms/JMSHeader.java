@@ -1,13 +1,14 @@
 package net.paffett.spring.jms;
 
+import javax.jms.Destination;
+
 public class JMSHeader {
 
-	String queueMgrName;
-	String queueName;
-	long   timeToLive;
-	String correlID;
-	String messageType;
-	long expiration;
+	private Destination replyTo;	
+	private long   timeToLive;
+	private String correlID;
+	private String messageType;
+	private long expiration;
 	
 	
 	public String getCorrelID() {
@@ -28,18 +29,13 @@ public class JMSHeader {
 	public void setExpiration(long expiration) {
 		this.expiration = expiration;
 	}
-	public String getQueueMgrName() {
-		return queueMgrName;
+	public Destination getReplyTo() {
+		return replyTo;
 	}
-	public void setQueueMgrName(String queueMgrName) {
-		this.queueMgrName = queueMgrName;
+	public void setReplyTo(Destination replyTo) {
+		this.replyTo = replyTo;
 	}
-	public String getQueueName() {
-		return queueName;
-	}
-	public void setQueueName(String queueName) {
-		this.queueName = queueName;
-	}
+
 	public long getTimeToLive() {
 		return timeToLive;
 	}

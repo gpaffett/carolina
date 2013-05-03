@@ -11,15 +11,15 @@ public class ODSRowElement {
 	
 	@XStreamAlias("C")
 	@XStreamImplicit()
-	private List<ODSColumnElement> columns;
+	private List<ODSCElement> columns;
 
-	public List<ODSColumnElement> getColumns() {
+	public List<ODSCElement> getColumns() {
 		return columns;
 	}
 
-	public void setColumn(ODSColumnElement column) {
+	public void setColumn(ODSCElement column) {
 		if (this.columns == null) {
-			this.columns = new ArrayList<ODSColumnElement>();
+			this.columns = new ArrayList<ODSCElement>();
 		}
 
 		this.columns.add(column);

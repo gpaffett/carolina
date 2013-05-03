@@ -12,11 +12,11 @@ import com.thoughtworks.xstream.annotations.XStreamImplicit;
 public class FDRRequestMessage extends FDRMessage {
 
 	@XStreamAlias("SECURITY")
-	private ODSSecurityElement securityElement;
+	private ODSSecurityElement securityElement = new ODSSecurityElement();
 
 	@XStreamAlias("ODSREQUEST")
 	@XStreamImplicit()
-	private List<ODSRequestElement> requestElements;
+	private List<ODSRequestElement> requestElements = new ArrayList<ODSRequestElement>();
 
 	public ODSSecurityElement getSecurityElement() {
 		return securityElement;
@@ -37,6 +37,22 @@ public class FDRRequestMessage extends FDRMessage {
 		}
 
 		this.requestElements.add(requestElement);
+	}
+	
+	public void setSecurityUserId(String userId) {
+		securityElement.setUserId(userId);
+	}
+	
+	public String getSecurityUserId() {
+		return securityElement.getUserId();
+	}
+
+	public void setSecurityPassword(String passwd)	{
+		securityElement.setPasswd(passwd);
+	}
+	
+	public String getSecurityPassword() {
+		return securityElement.getPasswd();
 	}
 
 }

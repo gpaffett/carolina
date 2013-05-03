@@ -1,38 +1,27 @@
 package net.paffett.spring.jms;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.text.MessageFormat;
 import java.util.List;
 
-import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.TextMessage;
-
-import net.paffett.domain.ods.request.FDRRequestMessage;
-import net.paffett.domain.ods.request.ODSRequestElement;
-import net.paffett.domain.ods.request.ODSSecurityElement;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.jms.JmsException;
 import org.springframework.jms.core.JmsTemplate;
-import org.springframework.jms.core.MessageCreator;
 
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
-import com.thoughtworks.xstream.io.xml.PrettyPrintWriter;
 
 /**
  * 
  * @author gp58112
  *
  */
-public abstract class SpringSychronousMessageHandler implements
+public abstract class FDRODSMessageHandler implements
 		SynchronousMessageHandler {
 
+
+	
 	protected JmsTemplate jmsTemplate;
 	protected Log log = LogFactory.getLog(this.getClass());
 	private static final int JMS_REQUEST_RETRY_COUNT = 3;
@@ -40,27 +29,37 @@ public abstract class SpringSychronousMessageHandler implements
 	private static final int JMS_RETRY_INTERVAL = 2000;
 	private static final int FAILOVER_RETRY_INTERVAL = 10000;
 
-	private MessageCreator messageCreator;
+	private GenericMessageCreator messageCreator;
 	private Destination requestDestination;
-	private Destination responseDestination;	
-
-
-	public abstract List<?> query(List<?> params);
+	private Destination responseDestination;
 	
-	protected MessageCreator getMessageCreator() {
+	private String query;
+
+	public FDRODSMessageHandler (String query) {
+		this.query = query;
+	}
+
+	protected abstract String formatMessageText(Object[] params);
+	
+	public abstract List<?> execute(List<?> params);
+	
+	protected GenericMessageCreator getMessageCreator() {
 		return messageCreator;
 	}
 	
-	public void setMessageCreator(MessageCreator messageCreator) {
+	public void setMessageCreator(GenericMessageCreator messageCreator) {
 		this.messageCreator = messageCreator;
 	}
 	
-	public String sendAndReceive(int retryAttempts, Boolean retry) throws JMSException, Exception {
+	public String sendAndReceive(GenericMessageCreator messageCReator, int retryAttempts, Boolean retry) throws JMSException, Exception {
+		
+		//TODO Format Request Message
 					
 		String messageId  = sendMessage(getRequestDestination(), retryAttempts, retry);
+		
+		log.info("Message: " + messageId + " has been Sent");
 
-		String responseMessage = "Response"; 
-		//receiveMessage(messageId, getReceiveDestination(), JMS_RESPONSE_RETRY_COUNT );
+		String responseMessage = receiveMessage(messageId, getResponseDestination(), JMS_RESPONSE_RETRY_COUNT );
 
 		if (responseMessage == null) {
 			//TODO Enhance Error Message
@@ -81,8 +80,12 @@ public abstract class SpringSychronousMessageHandler implements
 			throws JmsException, Exception {
 		
 		String messageId = null;
+		JMSHeader jmsHeader  = new JMSHeader();
 		
-		MessageCreator messageCreator = getMessageCreator();
+		jmsHeader.setReplyTo(responseDestination);
+		
+		GenericMessageCreator messageCreator = getMessageCreator();
+		messageCreator.setJmsHeader(jmsHeader);
 
 		try {
 			log.info("Sending Message");
@@ -120,7 +123,9 @@ public abstract class SpringSychronousMessageHandler implements
 			throw e;
 		}
 
-		//TODO get Message ID
+		if(messageId == null){
+			messageId = messageCreator.getMessageId();
+		}
 		
 		return messageId;
 
@@ -136,7 +141,7 @@ public abstract class SpringSychronousMessageHandler implements
 		long startTime = System.currentTimeMillis();
 
 		try {
-			responseMesg = (TextMessage) jmsTemplate.receiveSelected(
+			responseMesg = (TextMessage)jmsTemplate.receiveSelected(
 					receiveDestination, mesgSelector);
 
 		} catch (JmsException je) {
@@ -209,5 +214,5 @@ public abstract class SpringSychronousMessageHandler implements
 	public void setJmsTemplate(JmsTemplate jmsTemplate) {
 		this.jmsTemplate = jmsTemplate;
 	}
-
+		
 }

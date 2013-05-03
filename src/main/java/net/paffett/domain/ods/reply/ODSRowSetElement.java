@@ -14,6 +14,9 @@ public class ODSRowSetElement {
 	@XStreamAsAttribute
 	private String rowCount;
 	
+	@XStreamAlias("ROWDEF")
+	private ODSRowDefinitionElement odsRowDef;
+	
 	@XStreamAlias("ROW")
 	@XStreamImplicit()
 	private List<ODSRowElement> rows;
@@ -24,6 +27,14 @@ public class ODSRowSetElement {
 
 	public void setRowCount(String rowCount) {
 		this.rowCount = rowCount;
+	}
+	
+	public ODSRowDefinitionElement getOdsRowDef() {
+		return odsRowDef;
+	}
+
+	public void setOdsRowDef(ODSRowDefinitionElement odsRowDef) {
+		this.odsRowDef = odsRowDef;
 	}
 
 	public List<ODSRowElement> getRow() {
