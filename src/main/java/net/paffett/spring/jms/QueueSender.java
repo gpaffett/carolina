@@ -36,7 +36,7 @@ public class QueueSender {
 	 * @throws JMSException
 	 *             the JMS exception
 	 */
-	public void sendMessage(Destination destination, GenericMessageCreator messageCreator, int retryAttempts, Boolean retry)
+	public void sendMessage(Destination destination, AbstractMessageCreator messageCreator, int retryAttempts, Boolean retry)
 			throws JmsException, Exception {
 		
 		logger.info("About to put Message on queue. Queue[" + sendQueue.toString() + "]");

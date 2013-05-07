@@ -9,7 +9,7 @@ public class ODSSecurityElement {
 	private String userId;
 	
 	@XStreamAlias("PASSWD")
-	private String passwd;
+	private String password;
 	
 	public String getUserId() {
 		return userId;
@@ -17,11 +17,11 @@ public class ODSSecurityElement {
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-	public String getPasswd() {
-		return passwd;
+	public String getPassword() {
+		return password;
 	}
-	public void setPasswd(String passwd) {
-		this.passwd = passwd;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 	
 }

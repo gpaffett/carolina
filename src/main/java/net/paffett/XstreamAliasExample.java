@@ -25,7 +25,7 @@ public class XstreamAliasExample {
 	private static void objectsToXML() throws IOException {
 		ODSSecurityElement security = new ODSSecurityElement();		
 		security.setUserId("AAA");
-		security.setPasswd("BBBBBB");
+		security.setPassword("BBBBBB");
 		
 		ODSRequestElement request1 = new ODSRequestElement();
 		request1.setRowDef(Boolean.TRUE);
@@ -34,7 +34,7 @@ public class XstreamAliasExample {
 		
 		FDRRequestMessage fdrRequest = new FDRRequestMessage();
 		fdrRequest.setSecurityElement(security);
-		fdrRequest.addRequestElement(request1);
+		fdrRequest.addODSRequestElement(request1);
 		
 		XStream xstream  = new XStream();
 		xstream.processAnnotations(FDRRequestMessage.class);

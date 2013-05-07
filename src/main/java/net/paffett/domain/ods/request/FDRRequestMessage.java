@@ -30,7 +30,7 @@ public class FDRRequestMessage extends FDRMessage {
 		return requestElements;
 	}
 
-	public void addRequestElement(ODSRequestElement requestElement) {
+	public void addODSRequestElement(ODSRequestElement requestElement) {
 
 		if (this.requestElements == null) {
 			this.requestElements = new ArrayList<ODSRequestElement>();
@@ -38,6 +38,18 @@ public class FDRRequestMessage extends FDRMessage {
 
 		this.requestElements.add(requestElement);
 	}
+	
+	 public void addODSRequestElement(Boolean rowDef, Boolean columnId, String userData, String select )
+	 {
+		 ODSRequestElement odsRequestElement = new ODSRequestElement();
+		 
+		 odsRequestElement.setColomnId(columnId);		 
+		 odsRequestElement.setRowDef(rowDef);
+		 odsRequestElement.setSelect(select);
+		 odsRequestElement.setUserData(userData);
+		 		 
+		 this.requestElements.add(odsRequestElement);
+	 }
 	
 	public void setSecurityUserId(String userId) {
 		securityElement.setUserId(userId);
@@ -48,11 +60,11 @@ public class FDRRequestMessage extends FDRMessage {
 	}
 
 	public void setSecurityPassword(String passwd)	{
-		securityElement.setPasswd(passwd);
+		securityElement.setPassword(passwd);
 	}
 	
 	public String getSecurityPassword() {
-		return securityElement.getPasswd();
+		return securityElement.getPassword();
 	}
 
 }

@@ -1,7 +1,5 @@
 package net.paffett.spring.jms;
 
-import java.util.List;
-
 import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.TextMessage;
@@ -11,95 +9,45 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.jms.JmsException;
 import org.springframework.jms.core.JmsTemplate;
 
-
 /**
  * 
  * @author gp58112
- *
+ * 
  */
-public abstract class FDRODSMessageHandler implements
+public abstract class AbstractSpringSynchronousMessageHandler implements
 		SynchronousMessageHandler {
 
-
-	
 	protected JmsTemplate jmsTemplate;
-	protected Log log = LogFactory.getLog(this.getClass());
-	private static final int JMS_REQUEST_RETRY_COUNT = 3;
-	private static final int JMS_RESPONSE_RETRY_COUNT = 0;
-	private static final int JMS_RETRY_INTERVAL = 2000;
-	private static final int FAILOVER_RETRY_INTERVAL = 10000;
 
-	private GenericMessageCreator messageCreator;
+	protected Log log = LogFactory.getLog(this.getClass());
+
+	protected static final int JMS_REQUEST_RETRY_COUNT = 3;
+	protected static final int JMS_RESPONSE_RETRY_COUNT = 0;
+	protected static final int JMS_RETRY_INTERVAL = 2000;
+	protected static final int FAILOVER_RETRY_INTERVAL = 10000;
+
 	private Destination requestDestination;
 	private Destination responseDestination;
-	
-	private String query;
 
-	public FDRODSMessageHandler (String query) {
-		this.query = query;
-	}
+	protected abstract AbstractMessageCreator createMessageCreator(String query);
 
-	protected abstract String formatMessageText(Object[] params);
-	
-	public abstract List<?> execute(List<?> params);
-	
-	protected GenericMessageCreator getMessageCreator() {
-		return messageCreator;
-	}
-	
-	public void setMessageCreator(GenericMessageCreator messageCreator) {
-		this.messageCreator = messageCreator;
-	}
-	
-	public String sendAndReceive(GenericMessageCreator messageCReator, int retryAttempts, Boolean retry) throws JMSException, Exception {
-		
-		//TODO Format Request Message
-					
-		String messageId  = sendMessage(getRequestDestination(), retryAttempts, retry);
-		
-		log.info("Message: " + messageId + " has been Sent");
-
-		String responseMessage = receiveMessage(messageId, getResponseDestination(), JMS_RESPONSE_RETRY_COUNT );
-
-		if (responseMessage == null) {
-			//TODO Enhance Error Message
-			log.error("");
-			throw new JMSException(
-					"JMS TimeOut occurred while receiving response.");
-		}
-
-		if (log.isDebugEnabled()) {
-			log.debug(this.getClass().getSimpleName() + "Respionce received: ["
-					+  responseMessage + "]");
-		}
-		
-		return responseMessage;
-	}
-
-	private String sendMessage(final Destination destination, int retryAttempts, Boolean retry)
+	protected String sendMessage(AbstractMessageCreator messageCreator,
+			Destination queue, int retryAttempts, Boolean retry)
 			throws JmsException, Exception {
-		
+
 		String messageId = null;
-		JMSHeader jmsHeader  = new JMSHeader();
-		
-		jmsHeader.setReplyTo(responseDestination);
-		
-		GenericMessageCreator messageCreator = getMessageCreator();
-		messageCreator.setJmsHeader(jmsHeader);
+		;
 
 		try {
 			log.info("Sending Message");
-			jmsTemplate.send(destination, messageCreator);
+			jmsTemplate.send(queue, messageCreator);
 		} catch (JmsException e) {
 			if (retry) {
 				if (retryAttempts < JMS_REQUEST_RETRY_COUNT) {
 					retryAttempts = retryAttempts + 1;
 					log.error("sendMessage: Caught excpetion on attempt# = "
-							+ retryAttempts
-							+ ". Exception: "
-							+ e.getMessage()
-							+ "\n Will Retry after "
-							+ JMS_RETRY_INTERVAL
+							+ retryAttempts + ". Exception: " + e.getMessage()
+							+ "\n Will Retry after " + JMS_RETRY_INTERVAL
 							+ " milliseconds.");
 
 					try {
@@ -109,8 +57,9 @@ public abstract class FDRODSMessageHandler implements
 						log.warn("sendMessage: InterruptedException during Thread.sleep call: "
 								+ ie);
 					}
-					messageId = sendMessage(destination, retryAttempts, retry); 
-					
+					messageId = sendMessage(messageCreator, queue,
+							retryAttempts, retry);
+
 				} else {
 					throw e; // throw exception after max retry attempts.
 				}
@@ -123,15 +72,15 @@ public abstract class FDRODSMessageHandler implements
 			throw e;
 		}
 
-		if(messageId == null){
+		if (messageId == null) {
 			messageId = messageCreator.getMessageId();
 		}
-		
+
 		return messageId;
 
 	}
 
-	private String receiveMessage(final String mesgId,
+	protected String receiveMessage(final String mesgId,
 			final Destination receiveDestination, int retryAttempt)
 			throws JMSException {
 		TextMessage responseMesg = null;
@@ -141,7 +90,7 @@ public abstract class FDRODSMessageHandler implements
 		long startTime = System.currentTimeMillis();
 
 		try {
-			responseMesg = (TextMessage)jmsTemplate.receiveSelected(
+			responseMesg = (TextMessage) jmsTemplate.receiveSelected(
 					receiveDestination, mesgSelector);
 
 		} catch (JmsException je) {
@@ -181,10 +130,8 @@ public abstract class FDRODSMessageHandler implements
 
 		return responseMesgStr;
 	}
-	
-	
-	
-	public Destination getResponseDestination() throws JMSException {
+
+	public Destination getResponseDestination() {
 		return responseDestination;
 	}
 
@@ -199,7 +146,7 @@ public abstract class FDRODSMessageHandler implements
 	/**
 	 * @return the sendDestination
 	 */
-	public Destination getRequestDestination() throws JMSException {
+	public Destination getRequestDestination() {
 		return requestDestination;
 	}
 
@@ -214,5 +161,5 @@ public abstract class FDRODSMessageHandler implements
 	public void setJmsTemplate(JmsTemplate jmsTemplate) {
 		this.jmsTemplate = jmsTemplate;
 	}
-		
+
 }

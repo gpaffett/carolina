@@ -3,8 +3,6 @@ package net.paffett.spring.jms;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.jms.JMSException;
-
 import junit.framework.TestCase;
 
 import org.apache.commons.logging.Log;

@@ -3,7 +3,6 @@ package net.paffett.spring.jms;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
-import javax.jms.Session;
 import javax.jms.TextMessage;
 
 import org.apache.log4j.Logger;
@@ -34,16 +33,14 @@ public class TestODSMessageListener implements MessageListener {
 				 
 				JMSHeader header = new JMSHeader();
 				header.setCorrelID(message.getJMSMessageID());
-				GenericMessageCreator mc = new FDRODSRequestMessageCreator();
-				mc.setJmsHeader(header);
-	
+				String responseMessage = "<?xml version=\"1.0\"?><FDR version=\"1.0\"><ODSREPLY RC=\"0\"><ROWSET ROWS=\"2\">" +
+	                    "<ROWDEF><COLUMN ID=\"ADDRESS_1\" LEN=\"26\" NULL=\"Y\"/><COLUMN ID=\"ADDRESS_2\" LEN=\"26\" NULL = \"Y\"/>" +
+	                    "<COLUMN ID=\"ZIP_POSTAL_CODE\" LEN=\"10\" NULL=\"Y\"/><COLUMN ID=\"ATV_CUR_BAL\" LEN=\"4\" NULL=\"Y\"/>" +
+	                    "</ROWDEF><ROW><C>10826 FARNAM</C><C>AK-12</C><C>68104-1000</C><C>99.23</C></ROW><ROW><C>7305 PACIFIC</C><C>AK-12</C>" +
+	                    "<C>68104-1000</C><C>0.00</C></ROW></ROWSET></ODSREPLY></FDR>";
 				
-				mc.setMessageText("<?xml version=\"1.0\"?><FDR version=\"1.0\"><ODSREPLY RC=\"0\"><ROWSET ROWS=\"2\">" +
-		                    "<ROWDEF><COLUMN ID=\"ADDRESS_1\" LEN=\"26\" NULL=\"Y\"/><COLUMN ID=\"ADDRESS_2\" LEN=\"26\" NULL = \"Y\"/>" +
-		                    "<COLUMN ID=\"ZIP_POSTAL_CODE\" LEN=\"10\" NULL=\"Y\"/><COLUMN ID=\"ATV_CUR_BAL\" LEN=\"4\" NULL=\"Y\"/>" +
-		                    "</ROWDEF><ROW><C>10826 FARNAM</C><C>AK-12</C><C>68104-1000</C><C>99.23</C></ROW><ROW><C>7305 PACIFIC</C><C>AK-12</C>" +
-		                    "<C>68104-1000</C><C>0.00</C></ROW></ROWSET></ODSREPLY></FDR>");
-				
+				ODSResponseMessageCreator mc = new ODSResponseMessageCreator(responseMessage, header);
+					
 				logger.debug("About to process message: ");
 
 				/* call message sender to put message onto second queue */
