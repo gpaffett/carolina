@@ -36,7 +36,7 @@ public class SynchronousMessageSenderTest extends TestCase {
 			List<String> params = new ArrayList<String>();
 			params.add("George");
 			
-			aci.execute(params);
+			aci.executeQuery(params);
 		} catch (Exception e) {
 			log.error("Oh Crap", e);
 		}

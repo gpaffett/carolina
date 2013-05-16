@@ -1,7 +1,6 @@
 package net.paffett.domain.ods.reply;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
 @XStreamAlias("FDR")
 public class FDRReplyMessage {
@@ -16,5 +15,15 @@ public class FDRReplyMessage {
 	public void setOdsReplyElement(ODSReplyElement odsReplyElement) {
 		this.odsReplyElement = odsReplyElement;
 	}
-
+	
+	public String getResultCode()
+	{
+		return (this.odsReplyElement != null) ? odsReplyElement.getResultCode() : null; 		
+	}
+	
+	public ODSMessageElement getMessage()
+	{
+		return (this.odsReplyElement != null) ? odsReplyElement.getMessage() : null; 		
+	}
+	
 }

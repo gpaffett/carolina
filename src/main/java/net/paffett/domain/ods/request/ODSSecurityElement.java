@@ -11,6 +11,12 @@ public class ODSSecurityElement {
 	@XStreamAlias("PASSWD")
 	private String password;
 	
+	@XStreamAlias("PASSWDHASH")
+	private String passwordHash;
+	
+	@XStreamAlias("ENCRYPTCODEPG")
+	private String encryptCodePage;
+	
 	public String getUserId() {
 		return userId;
 	}
@@ -23,5 +29,17 @@ public class ODSSecurityElement {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
+	public String getPasswordHash() {
+		return passwordHash;
+	}
+	public void setPasswordHash(String passwordHash) {
+		this.passwordHash = passwordHash;
+	}
+	public String getEncryptCodePage() {
+		return encryptCodePage;
+	}
+	public void setEncryptCodePage(String encryptCodePage) {
+		this.encryptCodePage = encryptCodePage;
+	}
+
 }

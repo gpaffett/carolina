@@ -59,8 +59,7 @@
 			<value>True</value>
 		</property>
 	</bean>
-
-<!-- 
+ 
 	<bean id="poiMessageListenerContainer"
 		class="org.springframework.jms.listener.DefaultMessageListenerContainer">
 		<property name="connectionFactory" ref="cachedConnectionFactory" />
@@ -68,7 +67,7 @@
 		<property name="messageListener" ref="testMessageListener" />
 		<property name="concurrentConsumers" value="2" />
 	</bean>
- -->
+ 
  
 	<bean id="testMessageListener" class="net.paffett.spring.jms.TestODSMessageListener">
 		<property name="queueSender" ref="queueSender" />

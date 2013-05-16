@@ -10,14 +10,14 @@ public class ODSRowDefinitionElement {
 	
 	@XStreamAlias("COLUMN")
 	@XStreamImplicit
-	private List<ODSColumnElement> coulmns;
+	private List<ODSColumnElement> columns;
 
-	public List<ODSColumnElement> getCoulmns() {
-		return coulmns;
+	public List<ODSColumnElement> getColumns() {
+		return columns;
 	}
 
-	public void setCoulmns(List<ODSColumnElement> coulmns) {
-		this.coulmns = coulmns;
+	public void setColumns(List<ODSColumnElement> columns) {
+		this.columns = columns;
 	}
 
 }

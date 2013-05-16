@@ -6,7 +6,7 @@ import com.thoughtworks.xstream.annotations.XStreamConverter;
 import com.thoughtworks.xstream.converters.extended.ToAttributedValueConverter;
 
 @XStreamAlias("MESSAGE")
-@XStreamConverter(value=ToAttributedValueConverter.class, strings={"value"})
+@XStreamConverter(value=ToAttributedValueConverter.class, strings={"messageText"})
 public class ODSMessageElement {
 	
 	@XStreamAlias("RC")
@@ -17,7 +17,7 @@ public class ODSMessageElement {
 	@XStreamAsAttribute
 	private String severity;
 	
-	private String value;
+	private String messageText;
 
 	public String getReplyCode() {
 		return ReplyCode;
@@ -35,12 +35,12 @@ public class ODSMessageElement {
 		this.severity = severity;
 	}
 
-	public String getValue() {
-		return value;
+	public String getmessageText() {
+		return messageText;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+	public void setmessageText(String messageText) {
+		this.messageText = messageText;
 	}
 		
 }
