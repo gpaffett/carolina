@@ -22,7 +22,40 @@
 		</repository>
 	</repositories>
 
+
 	<dependencies>
+
+		<dependency>
+			<groupId>ibm.websphere</groupId>
+			<artifactId>com.ibm.mqjms</artifactId>
+			<version>7.0.1.4</version>
+		</dependency>
+		<dependency>
+			<groupId>ibm.websphere</groupId>
+			<artifactId>com.ibm.mq.jmqi</artifactId>
+			<version>7.0.1.4</version>
+		</dependency>
+		<dependency>
+			<groupId>ibm.websphere</groupId>
+			<artifactId>com.ibm.mq</artifactId>
+			<version>7.0.1.4</version>
+		</dependency>
+		<dependency>
+			<groupId>ibm.websphere</groupId>
+			<artifactId>com.ibm.msg.client.commonservices</artifactId>
+			<version>7.0.1.4</version>
+		</dependency>
+		<dependency>
+			<groupId>ibm.websphere</groupId>
+			<artifactId>connector</artifactId>
+			<version>7.0.1.4</version>
+		</dependency>
+		<dependency>
+			<groupId>ibm.websphere</groupId>
+			<artifactId>dhbcore</artifactId>
+			<version>7.0.1.4</version>
+		</dependency>
+
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>

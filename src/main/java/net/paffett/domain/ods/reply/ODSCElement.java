@@ -28,4 +28,9 @@ public class ODSCElement {
 		this.value = value;
 	}
 	
+	@Override
+	public String toString() {
+		return "ODSCElement [id=" + id + ", value=" + value + "]";
+	}
+	
 }

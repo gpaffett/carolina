@@ -1,166 +1,306 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <class-diagram version="1.1.2" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
   associations="true" dependencies="false" nesting-relationships="true">  
-  <class id="1" language="java" name="net.paffett.spring.jms.JMSHeaderVO" project="carolina" 
-    file="/carolina/src/main/java/net/paffett/spring/jms/JMSHeaderVO.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="261" width="168" x="49" y="37"/>    
+  <class id="1" language="java" name="net.paffett.spring.jms.SynchronousQueueSender" project="carolina" 
+    file="/carolina/src/main/java/net/paffett/spring/jms/SynchronousQueueSender.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="225" width="236" x="328" y="37"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="false" protected="true" private="true"/>      
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <interface id="2" language="java" name="net.paffett.spring.jms.SynchronousMessageHandler" project="carolina" 
+  <class id="2" language="java" name="net.paffett.spring.jms.XStreamMessageCreator" project="carolina" 
+    file="/carolina/src/main/java/net/paffett/spring/jms/XStreamMessageCreator.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="135" width="244" x="43" y="446"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="false" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="3" language="java" name="net.paffett.spring.jms.ODSMessageHandler" project="carolina" 
+    file="/carolina/src/main/java/net/paffett/spring/jms/ODSMessageHandler.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="297" width="231" x="1490" y="446"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="false" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="4" language="java" name="net.paffett.spring.jms.AbstractSpringSynchronousMessageHandler" project="carolina" 
+    file="/carolina/src/main/java/net/paffett/spring/jms/AbstractSpringSynchronousMessageHandler.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="369" width="367" x="1354" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="false" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="5" language="java" name="net.paffett.spring.jms.JMSHeader" project="carolina" 
+    file="/carolina/src/main/java/net/paffett/spring/jms/JMSHeader.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="351" width="168" x="327" y="446"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="false" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <interface id="6" language="java" name="net.paffett.spring.jms.SynchronousMessageHandler" project="carolina" 
     file="/carolina/src/main/java/net/paffett/spring/jms/SynchronousMessageHandler.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="81" width="201" x="413" y="518"/>    
+    <position height="-1" width="-1" x="1157" y="73"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="false" protected="true" private="true"/>      
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </interface>  
-  <class id="3" language="java" name="net.paffett.spring.jms.FDRODSRequestMessageCreator" project="carolina" 
-    file="/carolina/src/main/java/net/paffett/spring/jms/FDRODSRequestMessageCreator.java" binary="false" 
+  <class id="7" language="java" name="net.paffett.spring.jms.AbstractMessageCreator" project="carolina" 
+    file="/carolina/src/main/java/net/paffett/spring/jms/AbstractMessageCreator.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="369" width="213" x="257" y="37"/>    
+    <position height="261" width="245" x="43" y="37"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="false" protected="true" private="true"/>      
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="4" language="java" name="net.paffett.spring.jms.ODSMessageHandler" project="carolina" 
-    file="/carolina/src/main/java/net/paffett/spring/jms/ODSMessageHandler.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="441" width="243" x="533" y="37"/>    
+  <class id="8" language="java" name="net.paffett.spring.jms.ODSRequestMessageCreator" project="carolina" 
+    file="/carolina/src/main/java/net/paffett/spring/jms/ODSRequestMessageCreator.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="81" width="338" x="43" y="837"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="false" protected="true" private="true"/>      
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="5" language="java" name="net.paffett.spring.jms.ActivationCodeInquiry" project="carolina" 
+  <class id="9" language="java" name="net.paffett.spring.jms.ActivationCodeInquiry" project="carolina" 
     file="/carolina/src/main/java/net/paffett/spring/jms/ActivationCodeInquiry.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="135" width="163" x="654" y="518"/>    
+    <position height="189" width="298" x="1423" y="837"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="false" protected="true" private="true"/>      
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="6" language="java" name="net.paffett.domain.ods.request.ODSSecurityElement" project="carolina" 
+  <class id="10" language="java" name="net.paffett.domain.ods.request.ODSSecurityElement" project="carolina" 
     file="/carolina/src/main/java/net/paffett/domain/ods/request/ODSSecurityElement.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="189" width="142" x="49" y="729"/>    
+    <position height="297" width="186" x="1176" y="837"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="false" protected="true" private="true"/>      
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="7" language="java" name="net.paffett.domain.ods.request.FDRRequestMessage" project="carolina" 
+  <class id="11" language="java" name="net.paffett.domain.ods.request.FDRRequestMessage" project="carolina" 
     file="/carolina/src/main/java/net/paffett/domain/ods/request/FDRRequestMessage.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="153" width="263" x="89" y="518"/>    
+    <position height="243" width="317" x="863" y="446"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="false" protected="true" private="true"/>      
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="8" language="java" name="net.paffett.domain.ods.request.ODSRequestElement" project="carolina" 
+  <class id="12" language="java" name="net.paffett.domain.ods.request.ODSRequestElement" project="carolina" 
     file="/carolina/src/main/java/net/paffett/domain/ods/request/ODSRequestElement.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="351" width="154" x="373" y="729"/>    
+    <position height="351" width="154" x="911" y="837"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="false" protected="true" private="true"/>      
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="9" language="java" name="net.paffett.domain.ods.reply.ODSRowElement" project="carolina" 
+  <class id="13" language="java" name="net.paffett.domain.ods.reply.ODSRowElement" project="carolina" 
     file="/carolina/src/main/java/net/paffett/domain/ods/reply/ODSRowElement.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="117" width="216" x="851" y="729"/>    
+    <position height="117" width="188" x="499" y="1228"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="false" protected="true" private="true"/>      
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="10" language="java" name="net.paffett.domain.ods.reply.ODSCElement" project="carolina" 
+  <class id="14" language="java" name="net.paffett.domain.ods.reply.ODSMessageElement" project="carolina" 
+    file="/carolina/src/main/java/net/paffett/domain/ods/reply/ODSMessageElement.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="243" width="152" x="421" y="837"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="false" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="15" language="java" name="net.paffett.domain.ods.reply.ODSColumnElement" project="carolina" 
+    file="/carolina/src/main/java/net/paffett/domain/ods/reply/ODSColumnElement.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="243" width="148" x="727" y="1385"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="false" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="16" language="java" name="net.paffett.domain.ods.reply.ODSCElement" project="carolina" 
     file="/carolina/src/main/java/net/paffett/domain/ods/reply/ODSCElement.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="189" width="138" x="851" y="1120"/>    
+    <position height="189" width="130" x="499" y="1385"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="false" protected="true" private="true"/>      
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="11" language="java" name="net.paffett.domain.ods.reply.ODSReplyElement" project="carolina" 
+  <class id="17" language="java" name="net.paffett.domain.ods.reply.FDRReplyMessage" project="carolina" 
+    file="/carolina/src/main/java/net/paffett/domain/ods/reply/FDRReplyMessage.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="117" width="242" x="604" y="37"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="false" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="18" language="java" name="net.paffett.domain.ods.reply.ODSRowDefinitionElement" project="carolina" 
+    file="/carolina/src/main/java/net/paffett/domain/ods/reply/ODSRowDefinitionElement.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="117" width="236" x="727" y="1228"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="false" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="19" language="java" name="net.paffett.domain.ods.reply.ODSReplyElement" project="carolina" 
     file="/carolina/src/main/java/net/paffett/domain/ods/reply/ODSReplyElement.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="225" width="210" x="857" y="37"/>    
+    <position height="279" width="219" x="604" y="446"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="false" protected="true" private="true"/>      
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <class id="12" language="java" name="net.paffett.domain.ods.reply.ODSRowSetElement" project="carolina" 
+  <class id="20" language="java" name="net.paffett.domain.ods.reply.ODSRowSetElement" project="carolina" 
     file="/carolina/src/main/java/net/paffett/domain/ods/reply/ODSRowSetElement.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="171" width="186" x="857" y="518"/>    
+    <position height="207" width="258" x="613" y="837"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
       visibility="true">      
       <attributes public="true" package="false" protected="true" private="true"/>      
       <operations public="true" package="true" protected="true" private="true"/>    
     </display>  
   </class>  
-  <generalization id="13">    
-    <end type="SOURCE" refId="5"/>    
-    <end type="TARGET" refId="4"/>  
-  </generalization>  
-  <association id="14">    
-    <end type="SOURCE" refId="7" navigable="false">      
-      <attribute id="15" name="requestElements"/>      
-      <multiplicity id="16" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="8" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <realization id="17">    
-    <end type="SOURCE" refId="4"/>    
-    <end type="TARGET" refId="2"/>  
-  </realization>  
-  <association id="18">    
-    <end type="SOURCE" refId="12" navigable="false">      
-      <attribute id="19" name="rows"/>      
-      <multiplicity id="20" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="9" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
   <association id="21">    
-    <end type="SOURCE" refId="7" navigable="false">      
-      <attribute id="22" name="securityElement"/>      
+    <end type="SOURCE" refId="20" navigable="false">      
+      <attribute id="22" name="odsRowDef"/>      
       <multiplicity id="23" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="6" navigable="true"/>    
+    <end type="TARGET" refId="18" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="24">    
-    <end type="SOURCE" refId="11" navigable="false">      
-      <attribute id="25" name="rowSet"/>      
+    <end type="SOURCE" refId="19" navigable="false">      
+      <attribute id="25" name="message"/>      
       <multiplicity id="26" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="14" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="27">    
+    <end type="SOURCE" refId="17" navigable="false">      
+      <attribute id="28" name="odsReplyElement"/>      
+      <multiplicity id="29" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="19" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="30">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="7"/>  
+  </generalization>  
+  <generalization id="31">    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="3"/>  
+  </generalization>  
+  <association id="32">    
+    <end type="SOURCE" refId="18" navigable="false">      
+      <attribute id="33" name="coulmns"/>      
+      <multiplicity id="34" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="15" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="35">    
+    <end type="SOURCE" refId="19" navigable="false">      
+      <attribute id="36" name="rowSet"/>      
+      <multiplicity id="37" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="20" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="38">    
+    <end type="SOURCE" refId="11" navigable="false">      
+      <attribute id="39" name="requestElements"/>      
+      <multiplicity id="40" minimum="0" maximum="2147483647"/>    
     </end>    
     <end type="TARGET" refId="12" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="27">    
-    <end type="SOURCE" refId="9" navigable="false">      
-      <attribute id="28" name="columns"/>      
-      <multiplicity id="29" minimum="0" maximum="2147483647"/>    
+  <association id="41">    
+    <end type="SOURCE" refId="20" navigable="false">      
+      <attribute id="42" name="rows"/>      
+      <multiplicity id="43" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="13" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="44">    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="45" name="header"/>      
+      <multiplicity id="46" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="47">    
+    <end type="SOURCE" refId="11" navigable="false">      
+      <attribute id="48" name="securityElement"/>      
+      <multiplicity id="49" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="10" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="50">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="6"/>  
+  </realization>  
+  <generalization id="51">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="2"/>  
+  </generalization>  
+  <association id="52">    
+    <end type="SOURCE" refId="13" navigable="false">      
+      <attribute id="53" name="columns"/>      
+      <multiplicity id="54" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="16" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="55">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="4"/>  
+  </generalization>  
+  <association id="56">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="57" name="odsSecurity"/>      
+      <multiplicity id="58" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="10" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  

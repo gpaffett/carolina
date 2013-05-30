@@ -1,6 +1,8 @@
 package net.paffett.domain.ods.request;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamConverter;
+import com.thoughtworks.xstream.converters.basic.NullConverter;
 
 @XStreamAlias("SECURITY")
 public class ODSSecurityElement {
@@ -9,7 +11,7 @@ public class ODSSecurityElement {
 	private String userId;
 	
 	@XStreamAlias("PASSWD")
-	private String password;
+	private String password = "";
 	
 	@XStreamAlias("PASSWDHASH")
 	private String passwordHash;
@@ -41,5 +43,11 @@ public class ODSSecurityElement {
 	public void setEncryptCodePage(String encryptCodePage) {
 		this.encryptCodePage = encryptCodePage;
 	}
-
+	@Override
+	public String toString() {
+		return "ODSSecurityElement [userId=" + userId + ", password="
+				+ password + ", passwordHash=" + passwordHash
+				+ ", encryptCodePage=" + encryptCodePage + "]";
+	}
+	
 }

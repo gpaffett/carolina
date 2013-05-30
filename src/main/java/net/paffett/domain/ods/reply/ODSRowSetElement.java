@@ -9,14 +9,14 @@ import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
 @XStreamAlias("ROWSET")
 public class ODSRowSetElement {
-	
+
 	@XStreamAlias("ROWS")
 	@XStreamAsAttribute
 	private String rowCount;
-	
+
 	@XStreamAlias("ROWDEF")
 	private ODSRowDefinitionElement odsRowDef;
-	
+
 	@XStreamAlias("ROW")
 	@XStreamImplicit()
 	private List<ODSRowElement> rows;
@@ -28,7 +28,7 @@ public class ODSRowSetElement {
 	public void setRowCount(String rowCount) {
 		this.rowCount = rowCount;
 	}
-	
+
 	public ODSRowDefinitionElement getOdsRowDef() {
 		return odsRowDef;
 	}
@@ -48,5 +48,11 @@ public class ODSRowSetElement {
 
 		this.rows.add(row);
 	}
-	
+
+	@Override
+	public String toString() {
+		return "ODSRowSetElement [rowCount=" + rowCount + ", odsRowDef="
+				+ odsRowDef + ", rows=" + rows + "]";
+	}
+
 }

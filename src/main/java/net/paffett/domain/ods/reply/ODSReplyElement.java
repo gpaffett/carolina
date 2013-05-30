@@ -54,5 +54,12 @@ public class ODSReplyElement {
 	public void setRowSet(ODSRowSetElement rowSet) {
 		this.rowSet = rowSet;
 	}
+
+	@Override
+	public String toString() {
+		return "ODSReplyElement [resultCode=" + resultCode + ", userData="
+				+ userData + ", rowSet=" + rowSet + ", message=" + message
+				+ "]";
+	}
 		
 }

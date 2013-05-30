@@ -2,7 +2,7 @@ package net.paffett.spring.jms;
 
 import javax.jms.Destination;
 import javax.jms.JMSException;
-import javax.jms.TextMessage;
+import javax.jms.Message;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -29,106 +29,39 @@ public abstract class AbstractSpringSynchronousMessageHandler implements
 	private Destination requestDestination;
 	private Destination responseDestination;
 
-	protected abstract AbstractMessageCreator createMessageCreator(String query);
+	protected String sendMessage(Object message, Destination queue)
+			throws JmsException, JMSException {
 
-	protected String sendMessage(AbstractMessageCreator messageCreator,
-			Destination queue, int retryAttempts, Boolean retry)
-			throws JmsException, Exception {
-
-		String messageId = null;
-		;
+		ReferenceHolderMessagePostProcessor messagePostProcessor = new ReferenceHolderMessagePostProcessor();
 
 		try {
 			log.info("Sending Message");
-			jmsTemplate.send(queue, messageCreator);
+			jmsTemplate.convertAndSend(queue, message, messagePostProcessor);
 		} catch (JmsException e) {
-			if (retry) {
-				if (retryAttempts < JMS_REQUEST_RETRY_COUNT) {
-					retryAttempts = retryAttempts + 1;
-					log.error("sendMessage: Caught excpetion on attempt# = "
-							+ retryAttempts + ". Exception: " + e.getMessage()
-							+ "\n Will Retry after " + JMS_RETRY_INTERVAL
-							+ " milliseconds.");
-
-					try {
-						Thread.sleep(JMS_RETRY_INTERVAL); // sleep 2 seconds
-															// before retrying.
-					} catch (InterruptedException ie) {
-						log.warn("sendMessage: InterruptedException during Thread.sleep call: "
-								+ ie);
-					}
-					messageId = sendMessage(messageCreator, queue,
-							retryAttempts, retry);
-
-				} else {
-					throw e; // throw exception after max retry attempts.
-				}
-			} else {
-				log.error("MQJMSImp||sendMessage: Exception: " + e.getMessage());
-				throw e;
-			}
-
-		} catch (Exception e) {
-			throw e;
+			// TODO Handle JMSException
+			log.error("Failure in message Convert and Send", e);
 		}
 
-		if (messageId == null) {
-			messageId = messageCreator.getMessageId();
-		}
+		Message sentMessage = messagePostProcessor.getSentMessage();
 
-		return messageId;
+		return sentMessage.getJMSMessageID();
 
 	}
 
-	protected String receiveMessage(final String mesgId,
-			final Destination receiveDestination, int retryAttempt)
-			throws JMSException {
-		TextMessage responseMesg = null;
-		String responseMesgStr = null;
-		String mesgSelector = new String("JMSCorrelationID = " + "'" + mesgId
-				+ "'");
-		long startTime = System.currentTimeMillis();
+	protected Object receiveMessage(final String messageId,
+			final Destination receiveDestination) throws JMSException {
+		Object responseMessage = null;
 
+		String messageSelector = new String("JMSCorrelationID = " + "'"
+				+ messageId + "'");
 		try {
-			responseMesg = (TextMessage) jmsTemplate.receiveSelected(
-					receiveDestination, mesgSelector);
-
+			responseMessage = jmsTemplate.receiveSelectedAndConvert(
+					receiveDestination, messageSelector);
 		} catch (JmsException je) {
-			long waitTime = System.currentTimeMillis() - startTime;
-			// Retry only during MQ FailOver / Error scenarios.
-			// In other cases, timeout set at JMSTemplate will be applicable and
-			// Retry should NOT be performed.
-			if (waitTime < FAILOVER_RETRY_INTERVAL
-					&& retryAttempt < JMS_REQUEST_RETRY_COUNT) {
-				retryAttempt = retryAttempt + 1;
-				log.error("MQJMSImp||receiveMessage: Caught excpetion on attempt# = "
-						+ retryAttempt
-						+ ". Exception: "
-						+ je.getMessage()
-						+ "\n Will Retry after "
-						+ JMS_RETRY_INTERVAL
-						+ " milliseconds.");
-
-				try {
-					Thread.sleep(JMS_RETRY_INTERVAL); // sleep 2 seconds before
-														// retrying.
-				} catch (InterruptedException ie) {
-					log.warn("MQJMSImp||receiveMessage: InterruptedException during Thread.sleep call: "
-							+ ie);
-				}
-				responseMesgStr = receiveMessage(mesgId, receiveDestination,
-						retryAttempt); // Retry Receive operation (helps during
-										// MQ fail over).
-			} else {
-				throw je; // throw exception after max retry attempts.
-			}
+			// TODO Handle JMSException
 		}
-
-		if (responseMesgStr == null && responseMesg != null) {
-			responseMesgStr = responseMesg.getText();
-		}
-
-		return responseMesgStr;
+		
+		return responseMessage;
 	}
 
 	public Destination getResponseDestination() {

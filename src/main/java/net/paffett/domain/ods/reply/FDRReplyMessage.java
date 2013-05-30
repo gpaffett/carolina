@@ -25,5 +25,11 @@ public class FDRReplyMessage {
 	{
 		return (this.odsReplyElement != null) ? odsReplyElement.getMessage() : null; 		
 	}
+
+	@Override
+	public String toString() {
+		return "FDRReplyMessage [odsReplyElement=" + odsReplyElement + "]";
+	}
+	
 	
 }

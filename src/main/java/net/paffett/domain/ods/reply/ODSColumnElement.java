@@ -37,6 +37,10 @@ public class ODSColumnElement {
 		this.nullable = nullable;
 	}
 	
+	@Override
+	public String toString() {
+		return "ODSColumnElement [id=" + id + ", length=" + length
+				+ ", nullable=" + nullable + "]";
+	}
 	
-
 }

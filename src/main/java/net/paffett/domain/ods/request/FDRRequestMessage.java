@@ -3,14 +3,20 @@ package net.paffett.domain.ods.request;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.jms.Destination;
+
 import net.paffett.domain.FDRMessage;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
+import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
 @XStreamAlias("FDR")
 public class FDRRequestMessage extends FDRMessage {
 
+	@XStreamOmitField
+	private Destination replyTo;
+	
 	@XStreamAlias("SECURITY")
 	private ODSSecurityElement securityElement = new ODSSecurityElement();
 
@@ -65,6 +71,21 @@ public class FDRRequestMessage extends FDRMessage {
 	
 	public String getSecurityPassword() {
 		return securityElement.getPassword();
+	}
+
+	public Destination getReplyTo() {
+		return replyTo;
+	}
+
+	public void setReplyTo(Destination replyTo) {
+		this.replyTo = replyTo;
+	}
+
+	@Override
+	public String toString() {
+		return "FDRRequestMessage [replyTo=" + replyTo + ", securityElement="
+				+ securityElement + ", requestElements=" + requestElements
+				+ "]";
 	}
 
 }

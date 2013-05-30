@@ -55,4 +55,11 @@ public class ODSRequestElement {
 		this.exec = exec;
 	}
 	
+	@Override
+	public String toString() {
+		return "ODSRequestElement [rowDef=" + rowDef + ", colomnId=" + colomnId
+				+ ", userData=" + userData + ", select=" + select + ", exec="
+				+ exec + "]";
+	}
+	
 }

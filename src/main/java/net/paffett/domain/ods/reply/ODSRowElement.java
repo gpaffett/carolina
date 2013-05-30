@@ -24,7 +24,10 @@ public class ODSRowElement {
 
 		this.columns.add(column);
 	}
-	
-	
 
+	@Override
+	public String toString() {
+		return "ODSRowElement [columns=" + columns + "]";
+	}
+	
 }

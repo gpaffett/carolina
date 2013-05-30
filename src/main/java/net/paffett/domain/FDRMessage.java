@@ -17,4 +17,9 @@ public class FDRMessage {
 		this.version = version;
 	}
 
+	@Override
+	public String toString() {
+		return "FDRMessage [version=" + version + "]";
+	}
+	
 }

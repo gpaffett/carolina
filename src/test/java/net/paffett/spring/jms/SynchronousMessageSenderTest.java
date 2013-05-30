@@ -31,12 +31,16 @@ public class SynchronousMessageSenderTest extends TestCase {
 	}
 
 	public void testActivationInquiry() {
+		
+		Boolean results;
 
 		try {
 			List<String> params = new ArrayList<String>();
-			params.add("George");
+			params.add("4312300000451384");
 			
-			aci.executeQuery(params);
+			results = aci.executeQuery(params);
+			
+			assertTrue(results);
 		} catch (Exception e) {
 			log.error("Oh Crap", e);
 		}

@@ -34,10 +34,8 @@ public class TestODSMessageListener implements MessageListener {
 				JMSHeader header = new JMSHeader();
 				header.setCorrelID(message.getJMSMessageID());
 				String responseMessage = "<?xml version=\"1.0\"?><FDR version=\"1.0\"><ODSREPLY RC=\"0\"><ROWSET ROWS=\"2\">" +
-	                    "<ROWDEF><COLUMN ID=\"ADDRESS_1\" LEN=\"26\" NULL=\"Y\"/><COLUMN ID=\"ADDRESS_2\" LEN=\"26\" NULL = \"Y\"/>" +
-	                    "<COLUMN ID=\"ZIP_POSTAL_CODE\" LEN=\"10\" NULL=\"Y\"/><COLUMN ID=\"ATV_CUR_BAL\" LEN=\"4\" NULL=\"Y\"/>" +
-	                    "</ROWDEF><ROW><C>10826 FARNAM</C><C>AK-12</C><C>68104-1000</C><C>99.23</C></ROW><ROW><C>7305 PACIFIC</C><C>AK-12</C>" +
-	                    "<C>68104-1000</C><C>0.00</C></ROW></ROWSET></ODSREPLY></FDR>";
+	                    "<ROWDEF><COLUMN ID=\"ATV_RIS_CTL_FLG\" LEN=\"1\" NULL=\"N\"/></ROWDEF>" +
+						"<ROW><C>1</C></ROW></ROWSET></ODSREPLY></FDR>";
 				
 				ODSResponseMessageCreator mc = new ODSResponseMessageCreator(responseMessage, header);
 					

@@ -42,5 +42,11 @@ public class ODSMessageElement {
 	public void setmessageText(String messageText) {
 		this.messageText = messageText;
 	}
+
+	@Override
+	public String toString() {
+		return "ODSMessageElement [ReplyCode=" + ReplyCode + ", severity="
+				+ severity + ", messageText=" + messageText + "]";
+	}
 		
 }

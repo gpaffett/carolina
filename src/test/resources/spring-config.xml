@@ -1,81 +1,112 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:jee="http://www.springframework.org/schema/jee"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans  
-                                  http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  
-                                  http://www.springframework.org/schema/context  
-                                  http://www.springframework.org/schema/context/spring-context-3.0.xsd  
-                                  http://www.springframework.org/schema/beans  
-                                  http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  
-                                  http://www.springframework.org/schema/jee  
-                                  http://www.springframework.org/schema/jee/spring-jee-3.0.xsd">
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop" xmlns:util="http://www.springframework.org/schema/util"
+    xmlns:ctx="http://www.springframework.org/schema/context" xmlns:sws="http://www.springframework.org/schema/web-services"
+    xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="
+    http://www.springframework.org/schema/beans 
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+    http://www.springframework.org/schema/aop 
+    http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+    http://www.springframework.org/schema/context 
+    http://www.springframework.org/schema/context/spring-context-3.0.xsd
+    http://www.springframework.org/schema/web-services 
+    http://www.springframework.org/schema/web-services/web-services-3.0.xsd
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
 
-	<bean id="amqConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
-		<property name="brokerURL">
-			<value>tcp://localhost:61616</value>
+
+	<bean id="sendDestination" class="com.ibm.mq.jms.MQQueue">
+		<property name="baseQueueName">
+			<value>CPS.FDR.ODS.SQ1</value>
 		</property>
 	</bean>
 
-	<!-- A cached connection to wrap the ActiveMQ connection -->
-
-	<bean id="cachedConnectionFactory"
-		class="org.springframework.jms.connection.CachingConnectionFactory">
-		<property name="targetConnectionFactory" ref="amqConnectionFactory" />
-		<property name="sessionCacheSize">
-			<value>10</value>
+	<bean id="receiveDestination" class="com.ibm.mq.jms.MQQueue">
+		<property name="baseQueueName">
+			<value>CPS.FDR.ODS.RQ1</value>
+		</property>
+	</bean>
+	
+	<bean id="replyToDestination" class="com.ibm.mq.jms.MQQueue">
+		<property name="baseQueueName">
+			<value>FDR.REPLY.MQ16.Q</value>
 		</property>
 	</bean>
 
-	<!-- A destination in ActiveMQ -->
-	<bean id="requestDestination" class="org.apache.activemq.command.ActiveMQQueue">
-		<constructor-arg value="FOO.TEST" />
+	<bean id="jmsConnectionFactory" class="com.ibm.mq.jms.MQQueueConnectionFactory">
+		<property name="transportType">
+            <util:constant static-field="com.ibm.msg.client.wmq.WMQConstants.WMQ_CM_CLIENT" />
+        </property>
+		<property name="queueManager">
+			<value>ZMQT</value>
+		</property>
+		<property name="hostName">
+			<value>199.67.210.18</value>
+		</property>
+		<property name="port">
+			<value>1415</value>
+		</property>
+		<property name="channel">
+			<value>CPS.FDR.SVRCONN</value>
+		</property>
 	</bean>
 
-	<!-- A destination in ActiveMQ -->
-	<bean id="responseDestination" class="org.apache.activemq.command.ActiveMQQueue">
-		<constructor-arg value="FOO.BAR" />
+	<!-- <bean id="amqConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory"> 
+		<property name="brokerURL"> <value>tcp://localhost:61616</value> </property> 
+		</bean> <bean id="cachedConnectionFactory" class="org.springframework.jms.connection.CachingConnectionFactory"> 
+		<property name="targetConnectionFactory" ref="amqConnectionFactory" /> <property 
+		name="sessionCacheSize"> <value>10</value> </property> </bean> <bean id="requestDestination" 
+		class="org.apache.activemq.command.ActiveMQQueue"> <constructor-arg value="FOO.TEST" 
+		/> </bean> <bean id="responseDestination" class="org.apache.activemq.command.ActiveMQQueue"> 
+		<constructor-arg value="FOO.BAR" /> </bean> -->
+
+	<bean id="fdrODSMessageConverter" class="net.paffett.spring.jms.XStreamFDRMessageConverter" />
+
+	<bean id="jmsReceiveTimeout" class="java.lang.Integer">
+		<constructor-arg value="30000" />
 	</bean>
 
 	<!-- A JmsTemplate instance that uses the cached connection and destination -->
 	<bean id="producerTemplate" class="org.springframework.jms.core.JmsTemplate">
-		<property name="connectionFactory" ref="cachedConnectionFactory" />
-		<property name="defaultDestination" ref="requestDestination" />
+		<property name="connectionFactory" ref="jmsConnectionFactory" />
+		<property name="defaultDestination" ref="sendDestination" />
+		<property name="messageConverter" ref="fdrODSMessageConverter" />
+		<property name="receiveTimeout" ref="jmsReceiveTimeout" />
+		<property name="pubSubDomain"><value>false</value></property>
+		<property name="timeToLive"><value>5000</value></property>
 	</bean>
 
 	<bean id="securityElement" class="net.paffett.domain.ods.request.ODSSecurityElement">
 		<property name="userId" value="CBASE" />
-		<property name="password" value="ECOUNT" />
+		<property name="passwordHash">
+			<value>F2265B470291D0B7</value>
+		</property>
+		<property name="encryptCodePage">
+			<value>0437</value>
+		</property>
 	</bean>
 
 	<bean id="activationCodeInquiry" class="net.paffett.spring.jms.ActivationCodeInquiry">
 		<property name="jmsTemplate" ref="producerTemplate" />
-		<property name="requestDestination" ref="requestDestination" />
-		<property name="responseDestination" ref="responseDestination" />
-		<property name="odsSecurity" ref="securityElement"/>
+		<property name="requestDestination" ref="sendDestination" />
+		<property name="responseDestination" ref="receiveDestination" />
+		<property name="replyTo" ref="replyToDestination"/>
+		<property name="odsSecurity" ref="securityElement" />
 		<property name="rowDef">
 			<value>True</value>
 		</property>
 	</bean>
- 
-	<bean id="poiMessageListenerContainer"
-		class="org.springframework.jms.listener.DefaultMessageListenerContainer">
-		<property name="connectionFactory" ref="cachedConnectionFactory" />
-		<property name="destination" ref="requestDestination" />
-		<property name="messageListener" ref="testMessageListener" />
-		<property name="concurrentConsumers" value="2" />
-	</bean>
- 
- 
-	<bean id="testMessageListener" class="net.paffett.spring.jms.TestODSMessageListener">
-		<property name="queueSender" ref="queueSender" />
-	</bean>
 
-	<bean id="queueSender" class="net.paffett.spring.jms.QueueSender">
-		<property name="jmsTemplate" ref="producerTemplate" />
-		<property name="sendQueue" ref="responseDestination" />
-	</bean>
+	<!-- <bean id="poiMessageListenerContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer"> 
+		<property name="connectionFactory" ref="cachedConnectionFactory" /> <property 
+		name="destination" ref="requestDestination" /> <property name="messageListener" 
+		ref="testMessageListener" /> <property name="concurrentConsumers" value="2" 
+		/> </bean> <bean id="testMessageListener" class="net.paffett.spring.jms.TestODSMessageListener"> 
+		<property name="queueSender" ref="queueSender" /> </bean> <bean id="queueSender" 
+		class="net.paffett.spring.jms.QueueSender"> <property name="jmsTemplate" 
+		ref="producerTemplate" /> <property name="sendQueue" ref="responseDestination" 
+		/> </bean> -->
 
 </beans>

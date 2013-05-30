@@ -20,4 +20,9 @@ public class ODSRowDefinitionElement {
 		this.columns = columns;
 	}
 
+	@Override
+	public String toString() {
+		return "ODSRowDefinitionElement [columns=" + columns + "]";
+	}
+
 }
